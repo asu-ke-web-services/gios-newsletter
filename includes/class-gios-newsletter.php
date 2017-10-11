@@ -158,6 +158,8 @@ class Gios_Newsletter {
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 
 		// Add our GIOS Newsletter plugin hooks here
+
+		// create an admin page and corresponding menu
 		$this->loader->add_action( 'admin_menu', $plugin_admin, 'create_admin_menu' );
 
 	}
@@ -175,6 +177,13 @@ class Gios_Newsletter {
 
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
+
+		/**
+		 * Add our own actions to do stuff besides enqueue scripts. In this case, register
+		 * some shortcodes. Check 'public/class-gios-newsletter-public.php' for the actual
+		 * shortcodes (you'll find them inside the 'register_shortcodes' method)
+		 */
+		$this->loader->add_action( 'init', $plugin_public, 'register_shortcodes' );
 
 	}
 
