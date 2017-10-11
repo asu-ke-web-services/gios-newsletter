@@ -107,10 +107,12 @@ class Gios_Newsletter_Public {
 	 * @since 	1.0.0
 	 *
 	 * Place all calls to 'add_shortcode' here, and create their callback functions inside this
-	 * class, in the section below.
+	 * same file, in the section below.
 	 */
 	public function register_shortcodes() {
 		add_shortcode( 'featured_post', array( $this, 'featured_post_shortcode' ) );
+		add_shortcode( 'section_header', array( $this, 'section_header_shortcode' ) );
+		add_shortcode( 'category_section', array( $this, 'category_section_shortcode' ) );
 	}
 
 	/**
@@ -133,8 +135,19 @@ class Gios_Newsletter_Public {
 	 */
 	public function featured_post_shortcode() {
 		ob_start();
-		include( 'partials/featured-post.php' );
+		include( 'partials/short-codes/featured-post.php' );
 		return ob_get_clean();
 	}
 
+	public function section_header_shortcode( $atts ) {
+		ob_start();
+		include ( 'partials/short-codes/section-header.php' );
+		return ob_get_clean();
+	}
+
+	public function category_section_shortcode( $atts ) {
+		ob_start();
+		include ( 'partials/short-codes/category-section.php' );
+		return ob_get_clean();
+	}
 }
