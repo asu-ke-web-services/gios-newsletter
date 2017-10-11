@@ -100,4 +100,33 @@ class Gios_Newsletter_Admin {
 
 	}
 
+	/**
+	 * Register our admin-side menu and settings page.
+	 *
+	 * @since.   1.0.0
+	 *
+	 * Calls the native WordPress function to create an admin menu item, and corresponding settings page.
+	 */
+	public function create_admin_menu() {
+		add_options_page(
+			'Newsletter Settings',
+			'Newsletter',
+			'manage_options',
+			'gios_newsletter_settings',
+			array( $this, 'display_newsletter_settings' )
+		);
+	}
+
+	/**
+	 * Callback function that displays text (or does other stuff) at the top of our admin settings page.
+	 *
+	 * @since 	1.0.0
+	 *
+	 * The Boilerplate includes a default admin side file in the 'partials' directory. We'll just include
+	 * that here.
+	 */
+	public function display_newsletter_settings() {
+		include( 'partials/gios-newsletter-admin-display.php' );
+	}
+
 }
