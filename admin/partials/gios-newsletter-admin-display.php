@@ -14,3 +14,5 @@
 ?>
 
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
+<h2>Newsletter Settings</h2>
+<p>Just testing our plugin markup here. Nothing to see. Continue on your way.</p>
