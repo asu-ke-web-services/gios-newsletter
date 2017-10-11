@@ -113,6 +113,7 @@ class Gios_Newsletter_Public {
 		add_shortcode( 'featured_post', array( $this, 'featured_post_shortcode' ) );
 		add_shortcode( 'section_header', array( $this, 'section_header_shortcode' ) );
 		add_shortcode( 'category_section', array( $this, 'category_section_shortcode' ) );
+		add_shortcode( 'sidebar_menu', array( $this, 'sidebar_menu_shortcode' ) );
 	}
 
 	/**
@@ -141,13 +142,19 @@ class Gios_Newsletter_Public {
 
 	public function section_header_shortcode( $atts ) {
 		ob_start();
-		include ( 'partials/short-codes/section-header.php' );
+		include( 'partials/short-codes/section-header.php' );
 		return ob_get_clean();
 	}
 
 	public function category_section_shortcode( $atts ) {
 		ob_start();
-		include ( 'partials/short-codes/category-section.php' );
+		include( 'partials/short-codes/category-section.php' );
+		return ob_get_clean();
+	}
+
+	public function sidebar_menu_shortcode() {
+		ob_start();
+		include( 'partials/short-codes/sidebar-menu.php' );
 		return ob_get_clean();
 	}
 }
