@@ -100,4 +100,61 @@ class Gios_Newsletter_Public {
 
 	}
 
+
+	/**
+	 * Register Shortcodes
+	 *
+	 * @since 	1.0.0
+	 *
+	 * Place all calls to 'add_shortcode' here, and create their callback functions inside this
+	 * same file, in the section below.
+	 */
+	public function register_shortcodes() {
+		add_shortcode( 'featured_post', array( $this, 'featured_post_shortcode' ) );
+		add_shortcode( 'section_header', array( $this, 'section_header_shortcode' ) );
+		add_shortcode( 'category_section', array( $this, 'category_section_shortcode' ) );
+		add_shortcode( 'sidebar_menu', array( $this, 'sidebar_menu_shortcode' ) );
+	}
+
+	/**
+	 *
+	 * Shortcode callback functions.
+	 *
+	 * More complicated callback functions could make this file very long and hard to manage.
+	 * To avoid that, I've decided to use the following pattern:
+	 *
+	 * 1. Move the working code and HTML to a partial, where we can mix PHP and HTML in a cleaner
+	 * fashion than we could inside these functions.
+	 *
+	 * 2. In these callback functions, start output buffering and include our partial, which
+	 * can then just output what it needs to
+	 *
+	 * 3. return the resulting HTML from the output buffer (shortcode methods must RETURN, not ECHO
+	 * their results)
+	 *
+	 * Feel free to ignore this pattern for shorter/simpler functions :)
+	 */
+	public function featured_post_shortcode() {
+		ob_start();
+		include( 'partials/short-codes/featured-post.php' );
+		return ob_get_clean();
+	}
+
+	public function section_header_shortcode( $atts ) {
+		ob_start();
+		include( 'partials/short-codes/section-header.php' );
+		return ob_get_clean();
+	}
+
+	public function category_section_shortcode( $atts ) {
+		ob_start();
+		include( 'partials/short-codes/category-section.php' );
+		return ob_get_clean();
+	}
+
+	public function sidebar_menu_shortcode() {
+		ob_start();
+		include( 'partials/short-codes/sidebar-menu.php' );
+		return ob_get_clean();
+	}
 }
