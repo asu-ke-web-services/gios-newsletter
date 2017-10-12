@@ -5,6 +5,6 @@
 	), $atts );
 ?>
 
-<div style="border: 1px solid grey; padding: 1em; margin-bottom: 1em; text-align: center;">
-	<h2>Section Header: <?php echo $a['title']; ?></h2>
+<div style="background-color: #3399FF; color: white; padding: 1em; margin-bottom: 1em; text-align: center;">
+	<h3 style="color: #CCC;">Section Header: <?php echo $a['title']; ?></h2>
 </div>
