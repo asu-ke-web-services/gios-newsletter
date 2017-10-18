@@ -5,6 +5,8 @@
  *
  */
 
+use LightnCandy\LightnCandy;
+
 // first, normalize our shortcode attributes, providing defaults for anything missing
 $a = shortcode_atts( array(
 	'category_name' => '',
@@ -15,8 +17,8 @@ $a = shortcode_atts( array(
 // create an array of query parameters
 $args = array( 'category_name' => $a['category_name'] );
 
-// sort posts based on the 'order_by' attribute. The 'shortcode_atts()' method above will provide
-// a default of title if no 'order_by' attribute is present, so we can rely on there being something there
+// sort posts based on the 'order_by' attribute. The 'shortcode_atts()' method above will sort by title
+// if no 'order_by' attribute is present, so we can rely on there being something there
 switch ( $a['order_by'] ) {
 	case 'date':
 		$args['orderby'] = 'date';
@@ -33,25 +35,49 @@ switch ( $a['order_by'] ) {
 
 // create a new query to get posts in our category, sorted the way we want
 $category_posts = new WP_Query( $args );
-?>
+
+// the famous WordPress Loop!
+
+if( $category_posts->have_posts() ) {
+
+		/**
+		 * Before we actually begin looping, we'll grab our template, compile it, and the prep it for
+		 * using our data. That way we don't incur this overhead on every post in a category
+		 *
+		 * Note: to avoid having LightnCandy translate HTML tags into entities, we are passing the
+		 * NOESCAPE flag when we compile the template.
+		 */
+		$template = $this->templateManager->getTemplate( 'one-post' );
+		$compiled = LightnCandy::compile( $template, array(
+			'flags' => LightnCandy::FLAG_NOESCAPE
+		));
+		$renderer = LightnCandy::prepare( $compiled );
 
 
-<?php if( $category_posts->have_posts() ) : ?>
+		while( $category_posts->have_posts() ) {
+			/**
+			 * Now we're actually looping through posts. For each post, make a data array from the
+			 * items we want to display.
+			 *
+			 * Note: in order to supress actual output, we are using some alternate 'get_' methods
+			 * here. The 'get_the_content()' method may be troublesome, as it DOES NOT apply any
+			 * WordPress filters to the content. If you're not seeing expected behavior in post
+			 * content, this may be why.
+			 */
+    		$category_posts->the_post(); 
+	    	$data = array(
+					'title' => the_title( '', '', false ),
+					'content' => get_the_content(),
+					'date' => get_the_date(),
+					'time' => get_the_time()
+				);
 
-  <?php while( $category_posts->have_posts() ) : ?>
+	    	return $renderer( $data );
 
-     <?php $category_posts->the_post(); ?>
+	}
 
-	<div style="border: 1px solid #EEE; padding: 1em; margin-bottom: 1em;">
-		<h2><?php the_title() ?></h2>
-		<div class='post-content'><?php the_content() ?></div>
-		<p><em><?php the_date(); ?> at <?php the_time(); ?></em></p>
-	</div>
+}else{
 
-	<?php endwhile; ?>
+      echo '<p>Oops, there are no posts for this category.</p>';
 
-<?php else: ?>
-
-      <p>Oops, there are no posts for this category.</p>
-
-<?php endif; ?>
+}

@@ -27,6 +27,7 @@
  * @subpackage Gios_Newsletter/includes
  * @author     Walter McConnell <wmcconne@asu.edu>
  */
+
 class Gios_Newsletter {
 
 	/**
@@ -121,6 +122,19 @@ class Gios_Newsletter {
 		 * side of the site.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-gios-newsletter-public.php';
+
+		/**
+		 * Include our Handlebars template engine - LightnCandy - here so that it's available for both the
+		 * admin and public sides. We're using Composer's loading functionality here, which will pick up
+		 * LightnCandy via the LightnCandy composer.json file
+		 */
+		require_once plugin_dir_path( dirname(__FILE__ ) ) . 'vendor/autoload.php';
+
+		/**
+		 * Include our simple template loader class, which we use to load our Handlebar templates because
+		 * LightnCandy doesn't really provide a simple way to do that.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'vendor/gios/class-gios-template-manager.php';
 
 		$this->loader = new Gios_Newsletter_Loader();
 
